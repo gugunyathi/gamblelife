@@ -266,14 +266,24 @@ function UploadTab({ onUpload }: { onUpload: (r: number) => void }) {
 
 /* ───────────────────── PLAY TAB ─────────────────── */
 function PlayTab({ onWin, chips }: { onWin: (r: number) => void; chips: number }) {
-  const games = [
-    { name: "Confession Roulette", emoji: "🎡", min: 50, hot: true },
-    { name: "Body Count Blackjack", emoji: "🃏", min: 100, hot: false },
-    { name: "Sneaky Link Slots", emoji: "🎰", min: 25, hot: true },
-    { name: "Net Worth Crash", emoji: "📉", min: 200, hot: false },
-    { name: "Tax Bracket Bingo", emoji: "🧾", min: 75, hot: false },
-    { name: "Drunk-or-Sober Coinflip", emoji: "🪙", min: 10, hot: true },
+  const games: Game[] = [
+    { name: "Confession Roulette", emoji: "🎡", min: 50, hot: true, kind: "roulette" },
+    { name: "Body Count Blackjack", emoji: "🃏", min: 100, hot: false, kind: "blackjack" },
+    { name: "Sneaky Link Slots", emoji: "🎰", min: 25, hot: true, kind: "slots" },
+    { name: "Net Worth Crash", emoji: "📉", min: 200, hot: false, kind: "crash" },
+    { name: "Tax Bracket Bingo", emoji: "🧾", min: 75, hot: false, kind: "bingo" },
+    { name: "Drunk-or-Sober Coinflip", emoji: "🪙", min: 10, hot: true, kind: "coinflip" },
   ];
+  const [active, setActive] = useState<Game | null>(null);
+
+  // Simulated live players per table — re-rolled on mount and ticking
+  const [live, setLive] = useState<number[]>(() => games.map(() => 200 + Math.floor(Math.random() * 1800)));
+  useEffect(() => {
+    const iv = setInterval(() => {
+      setLive((arr) => arr.map((n) => Math.max(80, n + Math.floor((Math.random() - 0.45) * 60))));
+    }, 1500);
+    return () => clearInterval(iv);
+  }, []);
 
   return (
     <div className="px-4 pt-4 space-y-4">
@@ -286,11 +296,13 @@ function PlayTab({ onWin, chips }: { onWin: (r: number) => void; chips: number }
         </div>
         <div className="grid grid-cols-2 gap-3">
           {games.map((g, i) => (
-            <motion.div
+            <motion.button
               key={g.name}
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.04 }}
-              className="relative rounded-2xl glass p-4 overflow-hidden"
+              whileTap={{ scale: 0.97 }}
+              onClick={() => setActive(g)}
+              className="relative rounded-2xl glass p-4 overflow-hidden text-left"
             >
               <div className="flex items-center justify-between">
                 <div className="text-3xl">{g.emoji}</div>
@@ -300,13 +312,27 @@ function PlayTab({ onWin, chips }: { onWin: (r: number) => void; chips: number }
               </div>
               <div className="mt-3 text-sm font-black leading-tight">{g.name}</div>
               <div className="mt-1 text-[10px] text-muted-foreground">Min bet {g.min}</div>
-              <button className="mt-3 w-full rounded-xl bg-white/10 hover:bg-white/15 py-2 text-xs font-bold flex items-center justify-center gap-1">
+              <div className="mt-2 flex items-center gap-1.5 text-[10px]">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[oklch(0.82_0.25_145)] opacity-75" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[oklch(0.82_0.25_145)]" />
+                </span>
+                <span className="font-bold">{live[i].toLocaleString()} live</span>
+              </div>
+              <div className="mt-3 w-full rounded-xl bg-white/10 py-2 text-xs font-bold flex items-center justify-center gap-1">
                 Enter <ChevronRight className="size-3.5" />
-              </button>
-            </motion.div>
+              </div>
+            </motion.button>
           ))}
         </div>
       </div>
+
+      <TableModal
+        game={active}
+        chips={chips}
+        onClose={() => setActive(null)}
+        onResult={(delta) => onWin(delta)}
+      />
     </div>
   );
 }
