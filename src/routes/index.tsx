@@ -7,6 +7,7 @@ import { PollCard } from "@/components/PollCard";
 import { ChipBalance } from "@/components/ChipBalance";
 import { CoinScene } from "@/components/CoinScene";
 import { SlotMachine } from "@/components/SlotMachine";
+import { TableModal, type Game } from "@/components/TableModal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
