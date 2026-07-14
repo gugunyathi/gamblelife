@@ -8,6 +8,10 @@ import { ChipBalance } from "@/components/ChipBalance";
 import { CoinScene } from "@/components/CoinScene";
 import { SlotMachine } from "@/components/SlotMachine";
 import { TableModal, type Game } from "@/components/TableModal";
+import {
+  LiveTicker, JackpotBanner, DailySpin, MysteryBoxes,
+  StreakStrip, TrendingTags, QuickBet,
+} from "@/components/HomeExtras";
 
 export const Route = createFileRoute("/")({
   head: () => ({
