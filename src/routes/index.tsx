@@ -8,6 +8,10 @@ import { ChipBalance } from "@/components/ChipBalance";
 import { CoinScene } from "@/components/CoinScene";
 import { SlotMachine } from "@/components/SlotMachine";
 import { TableModal, type Game } from "@/components/TableModal";
+import {
+  LiveTicker, JackpotBanner, DailySpin, MysteryBoxes,
+  StreakStrip, TrendingTags, QuickBet,
+} from "@/components/HomeExtras";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -86,7 +90,7 @@ function Index() {
 
       {/* CONTENT */}
       <section className="flex-1 pb-28">
-        {tab === "feed" && <FeedTab onAnswer={handleAnswer} answered={answered} />}
+        {tab === "feed" && <FeedTab onAnswer={handleAnswer} answered={answered} onChips={(d) => setChips((c) => Math.max(0, c + d))} streak={streak} />}
         {tab === "upload" && <UploadTab onUpload={(r) => setChips((c) => c + r)} />}
         {tab === "play" && <PlayTab onWin={(r) => setChips((c) => c + r)} chips={chips} />}
         {tab === "ranks" && <RanksTab chips={chips} />}
@@ -124,12 +128,32 @@ function Index() {
 
 /* ───────────────────── FEED TAB (Tinder-style swipe deck) ─────────────────── */
 function FeedTab({
-  onAnswer, answered,
-}: { onAnswer: (id: string, reward: number) => void; answered: Set<string> }) {
+  onAnswer, answered, onChips, streak,
+}: {
+  onAnswer: (id: string, reward: number) => void;
+  answered: Set<string>;
+  onChips: (delta: number) => void;
+  streak: number;
+}) {
   const remaining = POLLS.filter((p) => !answered.has(p.id));
   return (
-    <div className="px-3 pt-3">
-      <div className="mb-3 flex items-center justify-between px-1">
+    <div className="px-3 pt-3 space-y-4">
+      <LiveTicker />
+      <JackpotBanner />
+
+      <div className="grid grid-cols-1 gap-3">
+        <DailySpin onWin={(n) => onChips(n)} />
+      </div>
+
+      <MysteryBoxes onOpen={(n) => onChips(n)} />
+
+      <StreakStrip streak={Math.max(1, Math.min(streak, 7))} />
+
+      <TrendingTags />
+
+      <QuickBet onBet={(n) => onChips(n)} />
+
+      <div className="mb-2 flex items-center justify-between px-1 pt-2">
         <div>
           <h2 className="text-xl font-black leading-tight">
             <span className="text-gradient-jackpot">Confess.</span> Swipe. Cash in.
