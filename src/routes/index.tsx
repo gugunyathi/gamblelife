@@ -122,28 +122,34 @@ function Index() {
   );
 }
 
-/* ───────────────────── FEED TAB (TikTok-style snap feed) ─────────────────── */
+/* ───────────────────── FEED TAB (Tinder-style swipe deck) ─────────────────── */
 function FeedTab({
   onAnswer, answered,
 }: { onAnswer: (id: string, reward: number) => void; answered: Set<string> }) {
+  const remaining = POLLS.filter((p) => !answered.has(p.id));
   return (
-    <div className="snap-y-mandatory scrollbar-none h-[calc(100dvh-176px)] overflow-y-scroll">
-      <div className="snap-center-y h-full w-full flex items-center justify-center px-4">
-        <Welcome />
+    <div className="px-3 pt-3">
+      <div className="mb-3 flex items-center justify-between px-1">
+        <div>
+          <h2 className="text-xl font-black leading-tight">
+            <span className="text-gradient-jackpot">Confess.</span> Swipe. Cash in.
+          </h2>
+          <p className="text-[11px] text-muted-foreground">
+            {remaining.length} hot polls · swipe ← / → to vote
+          </p>
+        </div>
+        <span className="rounded-full bg-white/10 px-2.5 py-1 text-[10px] font-black">
+          {answered.size}/{POLLS.length} 🔥
+        </span>
       </div>
-      {POLLS.map((p) => (
-        <PollCard
-          key={p.id}
-          poll={p}
-          onAnswer={(reward) => onAnswer(p.id, reward)}
-        />
-      ))}
-      <div className="snap-center-y h-full w-full flex items-center justify-center px-4">
-        <EndCard total={answered.size} />
-      </div>
+      <SwipeDeck
+        polls={POLLS}
+        onVote={(id, _optIdx, reward) => onAnswer(id, reward)}
+      />
     </div>
   );
 }
+
 
 function Welcome() {
   return (
