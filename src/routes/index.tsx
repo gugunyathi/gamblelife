@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Upload, Trophy, Bot, Home, Flame, Zap, ShieldCheck, ChevronRight } from "lucide-react";
 import { POLLS } from "@/lib/polls";
-import { PollCard } from "@/components/PollCard";
+import { SwipeDeck } from "@/components/SwipeCard";
 import { ChipBalance } from "@/components/ChipBalance";
 import { CoinScene } from "@/components/CoinScene";
 import { SlotMachine } from "@/components/SlotMachine";
