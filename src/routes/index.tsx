@@ -90,7 +90,7 @@ function Index() {
 
       {/* CONTENT */}
       <section className="flex-1 pb-28">
-        {tab === "feed" && <FeedTab onAnswer={handleAnswer} answered={answered} />}
+        {tab === "feed" && <FeedTab onAnswer={handleAnswer} answered={answered} onChips={(d) => setChips((c) => Math.max(0, c + d))} streak={streak} />}
         {tab === "upload" && <UploadTab onUpload={(r) => setChips((c) => c + r)} />}
         {tab === "play" && <PlayTab onWin={(r) => setChips((c) => c + r)} chips={chips} />}
         {tab === "ranks" && <RanksTab chips={chips} />}
