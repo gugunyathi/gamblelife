@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Upload, Trophy, Bot, Home, Flame, Zap, ShieldCheck, ChevronRight } from "lucide-react";
+import { Upload, Trophy, Bot, Home, Flame, Zap, ShieldCheck, ChevronRight, Layers } from "lucide-react";
 import { POLLS } from "@/lib/polls";
 import { SwipeDeck } from "@/components/SwipeCard";
 import { ChipBalance } from "@/components/ChipBalance";
@@ -44,7 +44,7 @@ const LEADERS = [
   { name: "@whisky.wizard", chips: 184500, emoji: "🥃" },
 ];
 
-type Tab = "feed" | "upload" | "play" | "ranks";
+type Tab = "feed" | "swipe" | "upload" | "play" | "ranks";
 
 function Index() {
   const [chips, setChips] = useState(12_480);
@@ -90,7 +90,8 @@ function Index() {
 
       {/* CONTENT */}
       <section className="flex-1 pb-28">
-        {tab === "feed" && <FeedTab onAnswer={handleAnswer} answered={answered} onChips={(d) => setChips((c) => Math.max(0, c + d))} streak={streak} />}
+        {tab === "feed" && <FeedTab onChips={(d) => setChips((c) => Math.max(0, c + d))} streak={streak} onOpenSwipe={() => setTab("swipe")} />}
+        {tab === "swipe" && <SwipeTab onAnswer={handleAnswer} answered={answered} />}
         {tab === "upload" && <UploadTab onUpload={(r) => setChips((c) => c + r)} />}
         {tab === "play" && <PlayTab onWin={(r) => setChips((c) => c + r)} chips={chips} />}
         {tab === "ranks" && <RanksTab chips={chips} />}
@@ -101,6 +102,7 @@ function Index() {
         <div className="glass rounded-3xl px-2 py-2 flex items-center justify-around shadow-card-deep">
           {([
             { id: "feed", icon: Home, label: "Feed" },
+            { id: "swipe", icon: Layers, label: "Swipe" },
             { id: "upload", icon: Upload, label: "Upload" },
             { id: "play", icon: Zap, label: "Play" },
             { id: "ranks", icon: Trophy, label: "Ranks" },
@@ -128,14 +130,12 @@ function Index() {
 
 /* ───────────────────── FEED TAB (Tinder-style swipe deck) ─────────────────── */
 function FeedTab({
-  onAnswer, answered, onChips, streak,
+  onChips, streak, onOpenSwipe,
 }: {
-  onAnswer: (id: string, reward: number) => void;
-  answered: Set<string>;
   onChips: (delta: number) => void;
   streak: number;
+  onOpenSwipe: () => void;
 }) {
-  const remaining = POLLS.filter((p) => !answered.has(p.id));
   return (
     <div className="px-3 pt-3 space-y-4">
       <LiveTicker />
@@ -153,7 +153,45 @@ function FeedTab({
 
       <QuickBet onBet={(n) => onChips(n)} />
 
-      <div className="mb-2 flex items-center justify-between px-1 pt-2">
+      <motion.button
+        whileTap={{ scale: 0.97 }}
+        onClick={onOpenSwipe}
+        className="relative w-full overflow-hidden rounded-3xl glass p-5 text-left shadow-card-deep ring-1 ring-white/10"
+      >
+        <div className="flex items-center gap-4">
+          <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-jackpot shadow-neon-gold text-2xl">
+            🎴
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="text-[10px] font-black uppercase tracking-widest text-[oklch(0.88_0.2_95)]">
+              Swipe deck · live
+            </div>
+            <h3 className="mt-0.5 text-lg font-black leading-tight">
+              <span className="text-gradient-jackpot">Confess.</span> Swipe. Cash in.
+            </h3>
+            <p className="text-[11px] text-muted-foreground">
+              {POLLS.length} hot polls · earn chips per swipe
+            </p>
+          </div>
+          <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
+        </div>
+        <div className="pointer-events-none absolute inset-0 shimmer" />
+      </motion.button>
+    </div>
+  );
+}
+
+/* ───────────────────── SWIPE TAB (Tinder-style deck) ─────────────────── */
+function SwipeTab({
+  onAnswer, answered,
+}: {
+  onAnswer: (id: string, reward: number) => void;
+  answered: Set<string>;
+}) {
+  const remaining = POLLS.filter((p) => !answered.has(p.id));
+  return (
+    <div className="px-3 pt-3 space-y-3">
+      <div className="mb-1 flex items-center justify-between px-1">
         <div>
           <h2 className="text-xl font-black leading-tight">
             <span className="text-gradient-jackpot">Confess.</span> Swipe. Cash in.
