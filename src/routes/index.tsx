@@ -12,6 +12,17 @@ import {
   LiveTicker, JackpotBanner, DailySpin, MysteryBoxes,
   StreakStrip, TrendingTags, QuickBet,
 } from "@/components/HomeExtras";
+import { ChipRain, AchievementToaster, XpRing, type Achievement } from "@/components/WinFx";
+
+const MILESTONES: { at: number; title: string; sub: string; emoji: string }[] = [
+  { at: 15_000, title: "High Roller", sub: "15K chips in the bag", emoji: "🎩" },
+  { at: 25_000, title: "Whale Alert", sub: "25K — the table is watching", emoji: "🐋" },
+  { at: 50_000, title: "Degen Deluxe", sub: "50K chips locked in", emoji: "💎" },
+  { at: 100_000, title: "Vegas Royalty", sub: "100K — legend status", emoji: "👑" },
+  { at: 250_000, title: "Mythic Baller", sub: "250K, absolutely feral", emoji: "🔥" },
+];
+
+const LEVEL_STEP = 5_000;
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -50,14 +61,46 @@ function Index() {
   const [chips, setChips] = useState(12_480);
   const [answered, setAnswered] = useState<Set<string>>(new Set());
   const [tab, setTab] = useState<Tab>("feed");
+  const [rainTrigger, setRainTrigger] = useState(0);
+  const [toasts, setToasts] = useState<Achievement[]>([]);
+  const [unlocked, setUnlocked] = useState<Set<number>>(new Set());
+
+  const pushToast = (a: Omit<Achievement, "id">) => {
+    const id = Date.now() + Math.random();
+    setToasts((t) => [...t, { ...a, id }]);
+    setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 3600);
+  };
+
+  const bumpChips = (delta: number) => {
+    setChips((c) => {
+      const next = Math.max(0, c + delta);
+      if (delta >= 1000) {
+        setRainTrigger((n) => n + 1);
+        pushToast({ title: `+${delta.toLocaleString()} chips`, sub: "Big win landed", emoji: "💰" });
+      } else if (delta <= -500) {
+        if (typeof navigator !== "undefined" && "vibrate" in navigator) navigator.vibrate?.(30);
+      }
+      MILESTONES.forEach((m) => {
+        if (next >= m.at && !unlocked.has(m.at)) {
+          setUnlocked((u) => new Set(u).add(m.at));
+          pushToast({ title: m.title, sub: m.sub, emoji: m.emoji });
+          setRainTrigger((n) => n + 1);
+        }
+      });
+      return next;
+    });
+  };
 
   const handleAnswer = (id: string, reward: number) => {
     if (answered.has(id)) return;
     setAnswered((prev) => new Set(prev).add(id));
-    setChips((c) => c + reward);
+    if (typeof navigator !== "undefined" && "vibrate" in navigator) navigator.vibrate?.(15);
+    bumpChips(reward);
   };
 
   const streak = useMemo(() => Math.min(answered.size, POLLS.length), [answered]);
+  const level = Math.floor(chips / LEVEL_STEP) + 1;
+  const levelProgress = (chips % LEVEL_STEP) / LEVEL_STEP;
 
   return (
     <main className="relative mx-auto flex min-h-screen w-full max-w-[480px] flex-col overflow-hidden">
@@ -67,17 +110,20 @@ function Index() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,oklch(0.25_0.12_320_/_0.6),transparent_60%)]" />
       </div>
 
+      <ChipRain trigger={rainTrigger} />
+      <AchievementToaster items={toasts} />
+
       {/* TOP BAR */}
       <header className="sticky top-0 z-30 flex items-center justify-between gap-3 px-4 pt-4 pb-3 glass">
         <div className="flex items-center gap-2 min-w-0">
-          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-jackpot shadow-neon-gold spin-slow">
-            <span className="text-lg">🎲</span>
-          </div>
+          <XpRing level={level} progress={levelProgress} />
           <div className="min-w-0">
             <h1 className="text-base font-black leading-none truncate">
               Gamble<span className="text-gradient-jackpot">Life</span>
             </h1>
-            <p className="text-[10px] text-muted-foreground leading-none mt-1">Base · live</p>
+            <p className="text-[10px] text-muted-foreground leading-none mt-1">
+              Base · L{level} · {Math.round(levelProgress * 100)}%
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
@@ -90,10 +136,10 @@ function Index() {
 
       {/* CONTENT */}
       <section className="flex-1 pb-28">
-        {tab === "feed" && <FeedTab onChips={(d) => setChips((c) => Math.max(0, c + d))} streak={streak} onOpenSwipe={() => setTab("swipe")} />}
+        {tab === "feed" && <FeedTab onChips={bumpChips} streak={streak} onOpenSwipe={() => setTab("swipe")} />}
         {tab === "swipe" && <SwipeTab onAnswer={handleAnswer} answered={answered} />}
-        {tab === "upload" && <UploadTab onUpload={(r) => setChips((c) => c + r)} />}
-        {tab === "play" && <PlayTab onWin={(r) => setChips((c) => c + r)} chips={chips} />}
+        {tab === "upload" && <UploadTab onUpload={bumpChips} />}
+        {tab === "play" && <PlayTab onWin={bumpChips} chips={chips} />}
         {tab === "ranks" && <RanksTab chips={chips} />}
       </section>
 
