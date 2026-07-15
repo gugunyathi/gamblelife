@@ -44,7 +44,7 @@ const LEADERS = [
   { name: "@whisky.wizard", chips: 184500, emoji: "🥃" },
 ];
 
-type Tab = "feed" | "upload" | "play" | "ranks";
+type Tab = "feed" | "swipe" | "upload" | "play" | "ranks";
 
 function Index() {
   const [chips, setChips] = useState(12_480);
