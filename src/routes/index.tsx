@@ -102,6 +102,7 @@ function Index() {
         <div className="glass rounded-3xl px-2 py-2 flex items-center justify-around shadow-card-deep">
           {([
             { id: "feed", icon: Home, label: "Feed" },
+            { id: "swipe", icon: Layers, label: "Swipe" },
             { id: "upload", icon: Upload, label: "Upload" },
             { id: "play", icon: Zap, label: "Play" },
             { id: "ranks", icon: Trophy, label: "Ranks" },
