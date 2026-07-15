@@ -130,14 +130,12 @@ function Index() {
 
 /* ───────────────────── FEED TAB (Tinder-style swipe deck) ─────────────────── */
 function FeedTab({
-  onAnswer, answered, onChips, streak,
+  onChips, streak, onOpenSwipe,
 }: {
-  onAnswer: (id: string, reward: number) => void;
-  answered: Set<string>;
   onChips: (delta: number) => void;
   streak: number;
+  onOpenSwipe: () => void;
 }) {
-  const remaining = POLLS.filter((p) => !answered.has(p.id));
   return (
     <div className="px-3 pt-3 space-y-4">
       <LiveTicker />
@@ -155,7 +153,45 @@ function FeedTab({
 
       <QuickBet onBet={(n) => onChips(n)} />
 
-      <div className="mb-2 flex items-center justify-between px-1 pt-2">
+      <motion.button
+        whileTap={{ scale: 0.97 }}
+        onClick={onOpenSwipe}
+        className="relative w-full overflow-hidden rounded-3xl glass p-5 text-left shadow-card-deep ring-1 ring-white/10"
+      >
+        <div className="flex items-center gap-4">
+          <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-jackpot shadow-neon-gold text-2xl">
+            🎴
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="text-[10px] font-black uppercase tracking-widest text-[oklch(0.88_0.2_95)]">
+              Swipe deck · live
+            </div>
+            <h3 className="mt-0.5 text-lg font-black leading-tight">
+              <span className="text-gradient-jackpot">Confess.</span> Swipe. Cash in.
+            </h3>
+            <p className="text-[11px] text-muted-foreground">
+              {POLLS.length} hot polls · earn chips per swipe
+            </p>
+          </div>
+          <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
+        </div>
+        <div className="pointer-events-none absolute inset-0 shimmer" />
+      </motion.button>
+    </div>
+  );
+}
+
+/* ───────────────────── SWIPE TAB (Tinder-style deck) ─────────────────── */
+function SwipeTab({
+  onAnswer, answered,
+}: {
+  onAnswer: (id: string, reward: number) => void;
+  answered: Set<string>;
+}) {
+  const remaining = POLLS.filter((p) => !answered.has(p.id));
+  return (
+    <div className="px-3 pt-3 space-y-3">
+      <div className="mb-1 flex items-center justify-between px-1">
         <div>
           <h2 className="text-xl font-black leading-tight">
             <span className="text-gradient-jackpot">Confess.</span> Swipe. Cash in.
