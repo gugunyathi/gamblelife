@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Upload, Trophy, Bot, Home, Flame, Zap, ShieldCheck, ChevronRight } from "lucide-react";
+import { Upload, Trophy, Bot, Home, Flame, Zap, ShieldCheck, ChevronRight, Layers } from "lucide-react";
 import { POLLS } from "@/lib/polls";
 import { SwipeDeck } from "@/components/SwipeCard";
 import { ChipBalance } from "@/components/ChipBalance";
