@@ -321,7 +321,7 @@ export function SwipeDeck({
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="absolute inset-0 grid place-items-center text-center p-8 rounded-3xl glass"
+            className="absolute inset-0 grid place-items-center text-center p-8 rounded-3xl glass-solid"
           >
             <div>
               <div className="text-6xl mb-3">🏁</div>
