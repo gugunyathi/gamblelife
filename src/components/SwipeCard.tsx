@@ -143,20 +143,20 @@ export function SwipeCard({
             <>
               <motion.div
                 style={{ opacity: likeOpacity }}
-                className="absolute right-6 top-20 rotate-12 rounded-2xl border-4 border-[oklch(0.82_0.25_145)] px-4 py-1.5 text-2xl font-black text-[oklch(0.82_0.25_145)] bg-black/40"
+                className="absolute right-6 top-20 rotate-12 rounded-2xl border-4 border-[oklch(0.82_0.25_145)] px-4 py-1.5 text-2xl font-black text-[oklch(0.82_0.25_145)] bg-black/70"
               >
                 {right.emoji} PICK
               </motion.div>
               <motion.div
                 style={{ opacity: nopeOpacity }}
-                className="absolute left-6 top-20 -rotate-12 rounded-2xl border-4 border-[oklch(0.72_0.27_340)] px-4 py-1.5 text-2xl font-black text-[oklch(0.72_0.27_340)] bg-black/40"
+                className="absolute left-6 top-20 -rotate-12 rounded-2xl border-4 border-[oklch(0.72_0.27_340)] px-4 py-1.5 text-2xl font-black text-[oklch(0.72_0.27_340)] bg-black/70"
               >
                 {left.emoji} PICK
               </motion.div>
               {extras.length > 0 && (
                 <motion.div
                   style={{ opacity: superOpacity }}
-                  className="absolute left-1/2 top-6 -translate-x-1/2 rounded-2xl border-4 border-[oklch(0.88_0.2_95)] px-4 py-1.5 text-lg font-black text-[oklch(0.88_0.2_95)] bg-black/40"
+                  className="absolute left-1/2 top-6 -translate-x-1/2 rounded-2xl border-4 border-[oklch(0.88_0.2_95)] px-4 py-1.5 text-lg font-black text-[oklch(0.88_0.2_95)] bg-black/70"
                 >
                   ⬆ OTHER
                 </motion.div>
