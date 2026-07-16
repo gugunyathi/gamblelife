@@ -191,11 +191,27 @@ function FeedTab({
       <LiveTicker />
       <JackpotBanner />
 
+      <VipCard onSubscribe={() => onChips(50_000)} />
+
+      <ChipStore onBuy={(n) => onChips(n)} />
+
+      <EarningsBooster onActivate={() => onChips(200)} />
+
+      <BattlePass xp={12480} />
+
       <div className="grid grid-cols-1 gap-3">
         <DailySpin onWin={(n) => onChips(n)} />
       </div>
 
       <MysteryBoxes onOpen={(n) => onChips(n)} />
+
+      <ReferCard onClaim={(n) => onChips(n)} />
+
+      <SkinShop onBuy={(n) => onChips(n)} />
+
+      <TipDrawer onTip={(n) => onChips(n)} />
+
+      <LossShield onBuy={() => onChips(5000)} />
 
       <StreakStrip streak={Math.max(1, Math.min(streak, 7))} />
 
