@@ -12,6 +12,10 @@ import {
   LiveTicker, JackpotBanner, DailySpin, MysteryBoxes,
   StreakStrip, TrendingTags, QuickBet,
 } from "@/components/HomeExtras";
+import {
+  ChipStore, VipCard, BattlePass, EarningsBooster,
+  TipDrawer, ReferCard, SkinShop, LossShield,
+} from "@/components/MonetizeExtras";
 import { ChipRain, AchievementToaster, XpRing, type Achievement } from "@/components/WinFx";
 
 const MILESTONES: { at: number; title: string; sub: string; emoji: string }[] = [
