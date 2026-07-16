@@ -86,7 +86,7 @@ export function SwipeCard({
       }
       transition={{ type: "spring", stiffness: 200, damping: 22 }}
     >
-      <div className="relative h-full w-full overflow-hidden rounded-[32px] glass shadow-card-deep ring-1 ring-white/10">
+      <div className="relative h-full w-full overflow-hidden rounded-[32px] glass-solid shadow-card-deep ring-1 ring-white/10">
         {/* Split hero images (This vs That) */}
         <div className="relative h-[62%] w-full overflow-hidden">
           <div className="absolute inset-0 flex">
@@ -127,12 +127,12 @@ export function SwipeCard({
 
           {/* Meta pill */}
           <div className="absolute left-4 top-4 flex items-center gap-2">
-            <span className="rounded-full bg-black/60 backdrop-blur px-3 py-1.5 text-[11px] font-black uppercase tracking-widest">
+            <span className="rounded-full bg-black/80 backdrop-blur px-3 py-1.5 text-[11px] font-black uppercase tracking-widest">
               {poll.emoji} {poll.category}
             </span>
           </div>
           <div className="absolute right-4 top-4">
-            <span className="flex items-center gap-1 rounded-full bg-black/60 backdrop-blur px-2.5 py-1 text-[11px] font-bold">
+            <span className="flex items-center gap-1 rounded-full bg-black/80 backdrop-blur px-2.5 py-1 text-[11px] font-bold">
               <Flame className="size-3 text-[oklch(0.85_0.2_45)]" />
               {poll.hype}
             </span>
@@ -143,20 +143,20 @@ export function SwipeCard({
             <>
               <motion.div
                 style={{ opacity: likeOpacity }}
-                className="absolute right-6 top-20 rotate-12 rounded-2xl border-4 border-[oklch(0.82_0.25_145)] px-4 py-1.5 text-2xl font-black text-[oklch(0.82_0.25_145)] bg-black/40"
+                className="absolute right-6 top-20 rotate-12 rounded-2xl border-4 border-[oklch(0.82_0.25_145)] px-4 py-1.5 text-2xl font-black text-[oklch(0.82_0.25_145)] bg-black/70"
               >
                 {right.emoji} PICK
               </motion.div>
               <motion.div
                 style={{ opacity: nopeOpacity }}
-                className="absolute left-6 top-20 -rotate-12 rounded-2xl border-4 border-[oklch(0.72_0.27_340)] px-4 py-1.5 text-2xl font-black text-[oklch(0.72_0.27_340)] bg-black/40"
+                className="absolute left-6 top-20 -rotate-12 rounded-2xl border-4 border-[oklch(0.72_0.27_340)] px-4 py-1.5 text-2xl font-black text-[oklch(0.72_0.27_340)] bg-black/70"
               >
                 {left.emoji} PICK
               </motion.div>
               {extras.length > 0 && (
                 <motion.div
                   style={{ opacity: superOpacity }}
-                  className="absolute left-1/2 top-6 -translate-x-1/2 rounded-2xl border-4 border-[oklch(0.88_0.2_95)] px-4 py-1.5 text-lg font-black text-[oklch(0.88_0.2_95)] bg-black/40"
+                  className="absolute left-1/2 top-6 -translate-x-1/2 rounded-2xl border-4 border-[oklch(0.88_0.2_95)] px-4 py-1.5 text-lg font-black text-[oklch(0.88_0.2_95)] bg-black/70"
                 >
                   ⬆ OTHER
                 </motion.div>
@@ -321,7 +321,7 @@ export function SwipeDeck({
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="absolute inset-0 grid place-items-center text-center p-8 rounded-3xl glass"
+            className="absolute inset-0 grid place-items-center text-center p-8 rounded-3xl glass-solid"
           >
             <div>
               <div className="text-6xl mb-3">🏁</div>

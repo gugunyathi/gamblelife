@@ -114,10 +114,14 @@
   .shadow-neon-gold { box-shadow: var(--shadow-neon-gold); }
   .shadow-card-deep { box-shadow: var(--shadow-card); }
   .glass {
-    background: oklch(0.2 0.06 290 / 55%);
+    background: oklch(0.15 0.05 290 / 0.94);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid oklch(1 0 0 / 8%);
+    border: 1px solid oklch(1 0 0 / 10%);
+  }
+  .glass-solid {
+    background: oklch(0.14 0.04 290 / 0.98);
+    border: 1px solid oklch(1 0 0 / 10%);
   }
   .scrollbar-none::-webkit-scrollbar { display: none; }
   .scrollbar-none { scrollbar-width: none; }

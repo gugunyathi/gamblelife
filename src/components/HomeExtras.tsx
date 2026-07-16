@@ -171,7 +171,7 @@ export function DailySpin({ onWin }: { onWin: (n: number) => void }) {
         {popup && (
           <motion.div
             initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ opacity: 0 }}
-            className="absolute inset-0 grid place-items-center bg-black/70 backdrop-blur-sm rounded-3xl"
+            className="absolute inset-0 grid place-items-center bg-black/90 backdrop-blur-sm rounded-3xl"
           >
             <div className="text-center">
               <div className="text-5xl mb-1">🎉</div>
