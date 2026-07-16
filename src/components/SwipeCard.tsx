@@ -127,12 +127,12 @@ export function SwipeCard({
 
           {/* Meta pill */}
           <div className="absolute left-4 top-4 flex items-center gap-2">
-            <span className="rounded-full bg-black/60 backdrop-blur px-3 py-1.5 text-[11px] font-black uppercase tracking-widest">
+            <span className="rounded-full bg-black/80 backdrop-blur px-3 py-1.5 text-[11px] font-black uppercase tracking-widest">
               {poll.emoji} {poll.category}
             </span>
           </div>
           <div className="absolute right-4 top-4">
-            <span className="flex items-center gap-1 rounded-full bg-black/60 backdrop-blur px-2.5 py-1 text-[11px] font-bold">
+            <span className="flex items-center gap-1 rounded-full bg-black/80 backdrop-blur px-2.5 py-1 text-[11px] font-bold">
               <Flame className="size-3 text-[oklch(0.85_0.2_45)]" />
               {poll.hype}
             </span>
