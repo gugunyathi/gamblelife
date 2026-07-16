@@ -86,7 +86,7 @@ export function SwipeCard({
       }
       transition={{ type: "spring", stiffness: 200, damping: 22 }}
     >
-      <div className="relative h-full w-full overflow-hidden rounded-[32px] glass shadow-card-deep ring-1 ring-white/10">
+      <div className="relative h-full w-full overflow-hidden rounded-[32px] glass-solid shadow-card-deep ring-1 ring-white/10">
         {/* Split hero images (This vs That) */}
         <div className="relative h-[62%] w-full overflow-hidden">
           <div className="absolute inset-0 flex">
